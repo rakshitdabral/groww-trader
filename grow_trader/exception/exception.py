@@ -1,12 +1,27 @@
 import sys
+import traceback
 from grow_trader.logging.logger import logger
 
 class CustomException(Exception):
     def __init__(self, error_message:Exception, error_detail:sys):
         self.error_message = error_message
         _,_,exc_tb = error_detail.exc_info()
-        self.lineno = exc_tb.tb_lineno
-        self.file_name = exc_tb.tb_frame.f_code.co_filename
+        
+        # Handle case where exc_tb is None
+        if exc_tb is not None:
+            self.lineno = exc_tb.tb_lineno
+            self.file_name = exc_tb.tb_frame.f_code.co_filename
+        else:
+            # Fallback: use traceback module to get current frame info
+            tb = traceback.extract_tb(sys.exc_info()[2])
+            if tb:
+                self.lineno = tb[-1].lineno
+                self.file_name = tb[-1].filename
+            else:
+                # Last resort: get caller's frame
+                frame = sys._getframe(1)
+                self.lineno = frame.f_lineno
+                self.file_name = frame.f_code.co_filename
 
     def __str__(self):
         return "Error occurred in python script name [{0}] line number [{1}] error message [{2}]".format(

@@ -6,6 +6,7 @@ import sys
 from grow_trader.logging.logger import logging
 from grow_trader.exception.exception import CustomException
 
+
 load_dotenv()
 
 

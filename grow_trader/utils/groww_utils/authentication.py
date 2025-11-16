@@ -6,13 +6,14 @@ import pyotp
 
 from grow_trader.logging.logger import logging
 from grow_trader.exception.exception import CustomException
+from grow_trader.config.groww_config import GROWW_API_KEY , GROWW_API_SECRET
 
 load_dotenv()
 
 def get_grow_access_token():
     try:
-        api_key = os.getenv("GROWW_API_KEY")
-        api_secret = os.getenv("GROWW_API_SECRET")
+        api_key = GROWW_API_KEY
+        api_secret = GROWW_API_SECRET
 
         if not api_key or not api_secret:
             msg = "Environment variables 'GROWW_API_KEY' or 'GROWW_API_SECRET' are missing."
