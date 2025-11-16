@@ -6,7 +6,7 @@ from grow_trader.logging.logger import logging
 from grow_trader.exception.exception import CustomException
 
 
-def search_instrument():
+def search_instrument(groww_symbol:str):
     try:
         API_AUTH_TOKEN = os.getenv("GROWW_ACCESS_TOKEN")
         if not API_AUTH_TOKEN:
@@ -16,8 +16,12 @@ def search_instrument():
         
         groww = GrowwAPI(API_AUTH_TOKEN)
         get_instrument_by_groww_symbol_response = groww.get_instrument_by_groww_symbol(
-            groww_symbol="NSE-RELIANCE"
+            groww_symbol=groww_symbol
         )
+        if get_instrument_by_groww_symbol_response is None:
+            msg = "Instrument not found for groww symbol: {groww_symbol}"
+            logging.error(msg)
+            raise CustomException(msg, sys)
         return get_instrument_by_groww_symbol_response
     except Exception as e:
-        raise CustomException(e,sys)
+        raise CustomException(e,sys) from e
