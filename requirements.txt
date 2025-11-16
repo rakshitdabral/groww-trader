@@ -2,5 +2,14 @@ python-dotenv
 setuptools
 growwapi
 pyotp
+secrets
+string
+pinecone-client
+openai
+sentence-transformers
+tqdm
+pandas
+numpy
+requests
 
 # -e .
