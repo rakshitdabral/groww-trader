@@ -118,3 +118,14 @@ class Order:
             return order_list
         except Exception as e:
             raise CustomException(e,sys)
+
+    def get_order_details(self, order_id: str):
+        try:
+            groww = GrowwAPI(self.groww_auth_token)
+            order_details = groww.get_order_detail(
+                groww_order_id=order_id,
+                segment=groww.SEGMENT_CASH,
+            )
+            return order_details
+        except Exception as e:
+            raise CustomException(e,sys)
