@@ -1,6 +1,6 @@
 from grow_trader.utils.groww_utils.authentication import get_grow_access_token
 from grow_trader.core.groww_portfolio import GrowwPortfolio
-from grow_trader.core.order import Order
+from grow_trader.core.groww_order import Order
 from grow_trader.utils.groww_utils.search_instrument import search_instrument
 from grow_trader.core.vector_db_search import VectorDBSearch
 from grow_trader.core.groww_live_data import GrowwLiveData
