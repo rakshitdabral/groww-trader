@@ -1,5 +1,5 @@
 from grow_trader.utils.groww_utils.authentication import get_grow_access_token
-from grow_trader.utils.groww_utils.portfolio import get_user_portfolio
+from grow_trader.core.groww_portfolio import GrowwPortfolio
 from grow_trader.core.order import Order
 from grow_trader.utils.groww_utils.search_instrument import search_instrument
 from grow_trader.core.vector_db_search import VectorDBSearch
@@ -107,36 +107,38 @@ def main():
 
         # print(Order().cancel_order(order_id="GLT251116205912P35THIBVY2H5"))
         
-        order_id = "GLT251116220611GV64KYXBCZP8"
-        order = Order()
+        # order_id = "GLT251116220611GV64KYXBCZP8"
+        # order = Order()
         
-        # Define key columns for better readability (optional - can be None to show all columns)
-        order_key_columns = ['groww_order_id', 'trading_symbol', 'order_status', 'quantity', 
-                            'price', 'transaction_type', 'order_type', 'created_at']
+        # # Define key columns for better readability (optional - can be None to show all columns)
+        # order_key_columns = ['groww_order_id', 'trading_symbol', 'order_status', 'quantity', 
+        #                     'price', 'transaction_type', 'order_type', 'created_at']
         
-        # Format all responses using the generic formatter
-        format_response(
-            order.get_trades_details(order_id=order_id),
-            title="📊 Trade Details"
-        )
+        # # Format all responses using the generic formatter
+        # format_response(
+        #     order.get_trades_details(order_id=order_id),
+        #     title="📊 Trade Details"
+        # )
         
-        format_response(
-            order.get_order_status(order_id=order_id),
-            title="📋 Order Status",
-            key_columns=order_key_columns
-        )
+        # format_response(
+        #     order.get_order_status(order_id=order_id),
+        #     title="📋 Order Status",
+        #     key_columns=order_key_columns
+        # )
         
-        format_response(
-            order.get_order_list(),
-            title="📋 Order List",
-            key_columns=order_key_columns
-        )
+        # format_response(
+        #     order.get_order_list(),
+        #     title="📋 Order List",
+        #     key_columns=order_key_columns
+        # )
         
-        format_response(
-            order.get_order_details(order_id=order_id),
-            title="📋 Order Details",
-            key_columns=order_key_columns
-        )
+        # format_response(
+        #     order.get_order_details(order_id=order_id),
+        #     title="📋 Order Details",
+        #     key_columns=order_key_columns
+        # )
+
+        print(GrowwPortfolio().get_position_for_user())
     except Exception as e:
         print("Error:", e)
 
