@@ -3,6 +3,7 @@ from grow_trader.core.groww_portfolio import GrowwPortfolio
 from grow_trader.core.order import Order
 from grow_trader.utils.groww_utils.search_instrument import search_instrument
 from grow_trader.core.vector_db_search import VectorDBSearch
+from grow_trader.core.groww_live_data import GrowwLiveData
 import os
 from dotenv import load_dotenv
 import pandas as pd
@@ -138,7 +139,9 @@ def main():
         #     key_columns=order_key_columns
         # )
 
-        print(GrowwPortfolio().get_position_for_user())
+        # print(GrowwPortfolio().get_position_for_user())
+        print(GrowwLiveData().get_live_quote(trading_symbol="IDEA", exchange="NSE", segment="CASH"))
+        print(GrowwLiveData().get_ltp(trading_symbol="IDEA", segment="CASH", exchange="NSE"))
     except Exception as e:
         print("Error:", e)
 
