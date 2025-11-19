@@ -45,6 +45,35 @@ class VectorDBSearch:
             if response is None:
                 logging.error(f"Response is None for query: {query}")
                 raise ValueError(f"Response is None for query: {query}")
-            return response
+            
+            # Convert QueryResponse to a JSON-serializable format
+            results = []
+            for match in response.matches:
+                result = {
+                    'id': match.id,
+                    'score': match.score,
+                    'metadata': match.metadata if match.metadata else {}
+                }
+                results.append(result)
+            
+            # Handle usage information safely
+            usage_info = None
+            if hasattr(response, 'usage') and response.usage:
+                try:
+                    if hasattr(response.usage, 'to_dict'):
+                        usage_info = response.usage.to_dict()
+                    else:
+                        usage_info = {
+                            'read_units': getattr(response.usage, 'read_units', None)
+                        }
+                except Exception:
+                    usage_info = None
+            
+            return {
+                'query': query,
+                'matches': results,
+                'namespace': response.namespace if hasattr(response, 'namespace') else None,
+                'usage': usage_info
+            }
         except Exception as e:
             raise CustomException(e,sys) from e

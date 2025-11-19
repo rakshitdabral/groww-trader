@@ -27,7 +27,7 @@ class GrowwLiveData:
             else:
                 segment = None
             live_quote = groww.get_quote(trading_symbol=trading_symbol, exchange=exchange, segment=segment,timeout=5)
-            return live_quote.get('ohlc', {})
+            return live_quote
         except Exception as e:
             raise CustomException(e,sys)
 

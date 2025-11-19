@@ -11,5 +11,7 @@ tqdm
 pandas
 numpy
 requests
+rich
+inquirer
 
 # -e .
