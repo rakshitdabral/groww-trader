@@ -29,15 +29,30 @@ class Order:
         
         return reference_id
     
-    def place_order(self, trading_symbol: str, quantity: int, price: float):
+    def place_order(self, trading_symbol: str, quantity: int, price: float, exchange: str = "NSE", segment: str = "CASH"):
         try:
             groww = GrowwAPI(self.groww_auth_token)
+            trading_symbol = trading_symbol.upper()
+            if exchange.upper() == "NSE":
+                exchange = groww.EXCHANGE_NSE
+            elif exchange.upper() == "BSE":
+                exchange = groww.EXCHANGE_BSE
+            else:
+                exchange = groww.EXCHANGE_NSE
+            if segment.upper() == "CASH":
+                segment = groww.SEGMENT_CASH
+            elif segment.upper() == "FUTURES":
+                segment = groww.SEGMENT_FNO
+            else:
+                segment = groww.SEGMENT_CASH
+            
+
             order = groww.place_order(
                 trading_symbol=trading_symbol, 
                 quantity=quantity, 
                 price=price,
                 validity=groww.VALIDITY_DAY,
-                segment=groww.SEGMENT_CASH,
+                segment=segment,
                 product=groww.PRODUCT_CNC,
                 exchange=groww.EXCHANGE_NSE,
                 order_type=groww.ORDER_TYPE_LIMIT,

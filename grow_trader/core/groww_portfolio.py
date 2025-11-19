@@ -25,9 +25,9 @@ class GrowwPortfolio:
     def get_position_for_user(self,segment:str=None):
         try:
             groww = GrowwAPI(self.groww_auth_token)
-            if segment == "CASH":
+            if segment.upper() == "CASH":
                 position = groww.get_positions_for_user(segment=groww.SEGMENT_CASH,timeout=5)
-            elif segment == "FUTURES":
+            elif segment.upper() == "FUTURES":
                 position = groww.get_positions_for_user(segment=groww.SEGMENT_FNO,timeout=5)
             else:
                 position = groww.get_positions_for_user()

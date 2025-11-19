@@ -315,11 +315,12 @@ class TraderCLI:
     def handle_search_menu(self):
         """Handle search menu"""
         query = self.interface.input_prompt("Enter search query: ")
-        
+        exchange = self.interface.input_prompt("Enter exchange (NSE/BSE): ", style="bold yellow") or "NSE"
         result = self.interface.show_loading(
             "[bold cyan]Searching instruments...[/bold cyan]",
             search_instrument,
-            groww_symbol=query
+            groww_symbol=query,
+            exchange=exchange
         )
         
         if result:

@@ -14,15 +14,16 @@ class GrowwLiveData:
     def get_live_quote(self,trading_symbol:str, exchange:str=None, segment:str=None):
         try:
             groww = GrowwAPI(self.groww_auth_token)
-            if exchange == "NSE" or exchange == "nse":
+            trading_symbol = trading_symbol.upper()
+            if exchange.upper() == "NSE":
                 exchange = groww.EXCHANGE_NSE
-            elif exchange == "BSE" or exchange == "bse":
+            elif exchange.upper() == "BSE":
                 exchange = groww.EXCHANGE_BSE
             else:
                 exchange = None
-            if segment == "CASH" or segment == "cash":
+            if segment.upper() == "CASH":
                 segment = groww.SEGMENT_CASH
-            elif segment == "FUTURES" or segment == "futures":
+            elif segment.upper() == "FUTURES":
                 segment = groww.SEGMENT_FNO
             else:
                 segment = None
@@ -46,15 +47,16 @@ class GrowwLiveData:
         """
         try:
             groww = GrowwAPI(self.groww_auth_token)
-            if exchange == "NSE" or exchange == "nse":
+            trading_symbol = trading_symbol.upper()
+            if exchange.upper() == "NSE":
                 symbol = f"NSE_{trading_symbol}"
-            elif exchange == "BSE" or exchange == "bse":
+            elif exchange.upper() == "BSE":
                 symbol = f"BSE_{trading_symbol}"
             else:
                 symbol = trading_symbol
-            if segment == "CASH" or segment == "cash":
+            if segment.upper() == "CASH":
                 segment = groww.SEGMENT_CASH
-            elif segment == "FUTURES" or segment == "futures":
+            elif segment.upper() == "FUTURES":
                 segment = groww.SEGMENT_FNO
             else:
                 segment = None
