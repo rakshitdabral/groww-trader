@@ -4,6 +4,7 @@ from grow_trader.core.groww_order import Order
 from grow_trader.core.groww_portfolio import GrowwPortfolio
 from grow_trader.core.groww_live_data import GrowwLiveData
 from grow_trader.core.vector_db_search import VectorDBSearch
+from grow_trader.core.portfolio_chatbot import PortfolioChatbot
 from grow_trader.utils.groww_utils.search_instrument import search_instrument
 
 class TraderCLI:
@@ -13,6 +14,7 @@ class TraderCLI:
         self.portfolio = GrowwPortfolio()
         self.live_data = GrowwLiveData()
         self.vector_search = VectorDBSearch()
+        self.chatbot = PortfolioChatbot()
         
     def run(self):
         """Main application loop"""
@@ -30,6 +32,7 @@ class TraderCLI:
                     "📈 Live Market Data",
                     "🔍 Search Instruments",
                     "🤖 AI Vector Search",
+                    "💬 Portfolio Chatbot",
                     "❌ Exit"
                 ]
                 
@@ -45,6 +48,8 @@ class TraderCLI:
                     self.handle_search_menu()
                 elif choice == "🤖 AI Vector Search":
                     self.handle_vector_search_menu()
+                elif choice == "💬 Portfolio Chatbot":
+                    self.handle_chatbot_menu()
                 elif choice == "❌ Exit":
                     self.interface.typing_effect("Thank you for using Groww Trader CLI!", delay=0.03, style="bold cyan")
                     sys.exit(0)
@@ -338,3 +343,61 @@ class TraderCLI:
         
         if result:
             self.interface.display_response(result, "AI Vector Search Results")
+    
+    def handle_chatbot_menu(self):
+        """Handle portfolio chatbot menu"""
+        self.interface.print_info("Starting Portfolio Chatbot...")
+        self.interface.print_info("Type 'exit' or 'quit' to go back, 'reset' to clear conversation, 'refresh' to reload portfolio data")
+        self.interface.print_info("=" * 60)
+        
+        # Initial greeting
+        try:
+            greeting = self.interface.show_loading(
+                "[bold cyan]🤖 Portfolio Bot is thinking...[/bold cyan]",
+                self.chatbot.chat,
+                "Hello! I'd like to chat about my portfolio."
+            )
+            if greeting:
+                self.interface.console.print(f"\n[bold cyan]🤖 Portfolio Bot:[/bold cyan] {greeting}\n")
+        except Exception as e:
+            self.interface.print_error(f"Error initializing chatbot: {str(e)}")
+            return
+        
+        while True:
+            try:
+                user_input = self.interface.input_prompt("You: ", style="bold green")
+                
+                if user_input.lower() in ['exit', 'quit', 'back']:
+                    self.interface.print_info("Exiting chatbot...")
+                    break
+                elif user_input.lower() == 'reset':
+                    self.chatbot.reset_conversation()
+                    self.interface.print_success("Conversation reset!")
+                    continue
+                elif user_input.lower() == 'refresh':
+                    response = self.interface.show_loading(
+                        "[bold cyan]🤖 Portfolio Bot is refreshing data and thinking...[/bold cyan]",
+                        self.chatbot.chat,
+                        "Please refresh the portfolio data.",
+                        refresh_data=True
+                    )
+                    if response:
+                        self.interface.console.print(f"\n[bold cyan]🤖 Portfolio Bot:[/bold cyan] {response}\n")
+                    continue
+                elif not user_input.strip():
+                    continue
+                
+                # Get response from chatbot with loading indicator
+                response = self.interface.show_loading(
+                    "[bold cyan]🤖 Portfolio Bot is thinking...[/bold cyan]",
+                    self.chatbot.chat,
+                    user_input
+                )
+                if response:
+                    self.interface.console.print(f"\n[bold cyan]🤖 Portfolio Bot:[/bold cyan] {response}\n")
+                
+            except KeyboardInterrupt:
+                self.interface.print_info("\nExiting chatbot...")
+                break
+            except Exception as e:
+                self.interface.print_error(f"Error: {str(e)}")
